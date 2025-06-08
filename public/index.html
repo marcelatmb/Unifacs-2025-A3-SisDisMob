@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Sistema de Reservas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Sistema de Reservas</h1>
+
+  <label for="tipoUsuario">Tipo de usuário:</label>
+  <select id="tipoUsuario">
+    <option value="">Selecione</option>
+    <option value="atendente">Atendente</option>
+    <option value="garcom">Garçom</option>
+    <option value="cancelar">Cancelar Reserva</option>
+    <option value="gerente">Gerente</option> </select>
+  </select>
+  <button onclick="mostrarFormulario()">Entrar</button>
+
+  <div id="formAtendente" class="formulario">
+    <h2>Cadastro de Reserva</h2>
+    <input type="date" id="data"><br>
+    <input type="time" id="hora"><br>
+    <input type="number" id="numeroMesa" placeholder="Número da mesa"><br>
+    <input type="number" id="qtdPessoas" placeholder="Quantidade de pessoas"><br>
+    <input type="text" id="nomeResponsavel" placeholder="Nome do responsável"><br>
+    <input type="text" id="garcom" placeholder="Garçom (opcional)"><br>
+    <button onclick="cadastrarReserva()">Cadastrar</button>
+  </div>
+
+  <div id="formGarcom" class="formulario">
+    <h2>Confirmar Ocupação</h2>
+    <input type="text" id="idReserva" placeholder="ID da reserva"><br>
+    <button onclick="confirmarReserva()">Confirmar</button>
+  </div>
+
+  <div id="formGerente" class="formulario">
+    <h2>Opções de Relatório do Gerente</h2>
+    
+    <label for="tipoRelatorio">Selecionar Relatório:</label>
+    <select id="tipoRelatorio" onchange="mostrarCamposRelatorio()">
+      <option value="">Selecione um tipo de relatório</option>
+      <option value="periodo">Reservas por Período</option>
+      <option value="mesa">Reservas por Mesa</option>
+      <option value="status">Mesas por Status</option>
+    </select>
+    <br><br>
+
+    <div id="camposPeriodo" style="display: none;">
+      <label for="relatorioDataInicio">Data Início:</label>
+      <input type="date" id="relatorioDataInicio"><br>
+      <label for="relatorioDataFim">Data Fim:</label>
+      <input type="date" id="relatorioDataFim"><br>
+      <button onclick="gerarRelatorio()">Exibir Relatório por Período</button><br>
+    </div>
+
+    <div id="camposMesa" style="display: none;">
+      <label for="relatorioNumeroMesa">Número da Mesa:</label>
+      <input type="number" id="relatorioNumeroMesa" placeholder="Ex: 5"><br>
+      <button onclick="gerarRelatorioPorMesa()">Exibir Relatório por Mesa</button><br>
+    </div>
+
+    <div id="camposStatus" style="display: none;">
+      <label for="relatorioStatus">Status:</label>
+      <select id="relatorioStatus">
+        <option value="Pendente">Pendente</option>
+        <option value="Confirmada">Confirmada</option>
+        <option value="Cancelada">Cancelada</option>
+      </select><br>
+      <button onclick="gerarRelatorioPorStatus()">Exibir Relatório por Status</button><br>
+    </div>
+    
+    <hr> <h3>Resultados dos Relatórios:</h3>
+    <pre id="relatorioPeriodo"></pre>
+    <pre id="relatorioMesa"></pre>
+    <pre id="relatorioStatusResult"></pre>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
