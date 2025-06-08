@@ -91,11 +91,6 @@ async function cancelarReserva(db, idReserva) {
     if (!reserva) {
         return { sucesso: false, message: `Reserva não encontrada.` };
     }
-    // Consideramos que apenas reservas 'Pendente' podem ser canceladas via esta função.
-    // Se quiser permitir cancelar 'Confirmada', remova a condição abaixo.
-    if (reserva.status !== 'Pendente') {
-        return { sucesso: false, message: `Somente reservas pendentes podem ser canceladas. Status atual: ${reserva.status}.` };
-    }
 
     const result = await db.run(`UPDATE reservas SET status = 'Cancelada' WHERE id = ?`, [idReserva]);
     if (result.changes === 0) {

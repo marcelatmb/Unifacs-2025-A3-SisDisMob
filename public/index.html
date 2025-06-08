@@ -13,7 +13,6 @@
     <option value="">Selecione</option>
     <option value="atendente">Atendente</option>
     <option value="garcom">Garçom</option>
-    <option value="cancelar">Cancelar Reserva</option>
     <option value="gerente">Gerente</option> </select>
   </select>
   <button onclick="mostrarFormulario()">Entrar</button>
@@ -31,8 +30,12 @@
 
   <div id="formGarcom" class="formulario">
     <h2>Confirmar Ocupação</h2>
-    <input type="text" id="idReserva" placeholder="ID da reserva"><br>
+    <input type="text" id="idReservaConfirma" placeholder="ID da reserva"><br>
     <button onclick="confirmarReserva()">Confirmar</button>
+    <h2>Cancelar Ocupação</h2>
+    <input type="text" id="idReservaCancela" placeholder="ID da reserva"><br>
+    <button onclick="cancelarReserva()">Cancelar</button>
+
   </div>
 
   <div id="formGerente" class="formulario">

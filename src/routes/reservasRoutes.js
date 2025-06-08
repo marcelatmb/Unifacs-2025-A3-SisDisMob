@@ -15,10 +15,6 @@ router.get("/status/:status", controller.obterMesasPorStatus);
 
 router.put("/confirmar/:idReserva", controller.confirmarReserva);
 
-// ALTERAÇÃO: Mudança do método PUT para DELETE para a rota de cancelamento,
-// que é mais semanticamente correta para excluir ou "desativar" um recurso.
-// O parâmetro na URL foi ajustado para ':id' para ser mais genérico,
-// alinhando com a prática comum de DELETE por ID.
-router.delete("/:id", controller.cancelarReserva);
+router.put("/cancelar/:idReserva", controller.cancelarReserva);
 
 module.exports = router;

@@ -14,7 +14,7 @@ exports.criarReserva = async (req, res) => {
       numero_mesa,
       qtd_pessoas,
       nome_responsavel,
-      garcom, // 'status' foi removido aqui, será definido como 'Pendente' no serviço
+      garcom,
     } = req.body;
 
     // ALTERAÇÃO: 'status' foi removido da desestruturação e da validação, pois será definido no serviço.
@@ -188,24 +188,19 @@ exports.confirmarReserva = async (req, res) => {
 // Função para cancelar uma reserva
 exports.cancelarReserva = async (req, res) => {
   try {
-    // ALTERAÇÃO: O ID da reserva virá de ':id' na rota DELETE, então usamos req.params.id
-    const idReserva = parseInt(req.params.id, 10); // Ajuste para pegar o ID da rota DELETE
+    const idReserva = parseInt(req.params.idReserva, 10);
 
     if (isNaN(idReserva)) {
       console.error("Erro: ID de reserva inválido.");
       return res.status(400).json({ error: "ID de reserva inválido." });
     }
 
-    // ALTERAÇÃO: O serviço agora retorna um objeto com sucesso/mensagem.
     const resultado = await service.cancelarReserva(req.db, idReserva);
 
     if (resultado.sucesso) {
-      res.status(200).json({ message: resultado.message });
+      res.json({ message: resultado.message });
     } else {
-      // Se não foi sucesso, a mensagem do serviço indica o motivo (ex: não encontrada, status errado)
-      // Retorna 404 se a reserva não for encontrada, ou 400 para outros motivos (ex: status não pendente)
-      const statusCode = resultado.message.includes("Reserva não encontrada") ? 404 : 400;
-      res.status(statusCode).json({
+      return res.status(400).json({
         error: "Erro ao cancelar reserva.",
         detalhe: resultado.message,
       });

@@ -110,7 +110,7 @@ async function cadastrarReserva() {
 }
 
 async function confirmarReserva() {
-  const id = document.getElementById("idReserva").value;
+  const id = document.getElementById("idReservaConfirma").value;
   if (!id) {
     alert("Por favor, informe o ID da reserva para confirmar.");
     return;
@@ -125,7 +125,7 @@ async function confirmarReserva() {
 
     if (response.ok) {
       alert("Reserva confirmada com sucesso!");
-      document.getElementById("idReserva").value = '';
+      document.getElementById("idReservaConfirma").value = '';
     } else {
       alert("Erro ao confirmar reserva: " + (res.detalhe || res.error || "Erro desconhecido."));
     }
@@ -134,23 +134,23 @@ async function confirmarReserva() {
   }
 }
 
-async function cancelarReservaCliente() {
-  const id = document.getElementById("idReservaCancelar").value;
+async function cancelarReserva() {
+  const id = document.getElementById("idReservaCancela").value;
   if (!id) {
     alert("Por favor, informe o ID da reserva para cancelar.");
     return;
   }
 
   try {
-    const response = await fetch(`http://localhost:3000/reservas/${id}`, {
-      method: "DELETE"
+    const response = await fetch(`http://localhost:3000/reservas/cancelar/${id}`, {
+      method: "PUT"
     });
 
     const res = await response.json();
 
     if (response.ok) {
       alert("Reserva cancelada com sucesso!");
-      document.getElementById("idReservaCancelar").value = '';
+      document.getElementById("idReservaCancela").value = '';
     } else {
       alert("Erro ao cancelar reserva: " + (res.detalhe || res.error || "Erro desconhecido."));
     }

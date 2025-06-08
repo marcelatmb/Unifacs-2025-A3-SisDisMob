@@ -785,3 +785,96 @@ Garçom: marcela
 -----------------------
 Total de reservas encontradas: 1
 =======================
+
+====================
+2025-06-08 15:37:32
+Tipo: Consulta por status (Confirmada)
+--------------------
+Mesa: 1
+Status: Confirmada
+-----------------------
+Total de mesas encontradas: 1
+=======================
+
+====================
+2025-06-08 15:37:34
+Tipo: Consulta por status (Confirmada)
+--------------------
+Mesa: 1
+Status: Confirmada
+-----------------------
+Total de mesas encontradas: 1
+=======================
+
+====================
+2025-06-08 15:37:36
+Tipo: Consulta por status (Pendente)
+--------------------
+Mesa: 2
+Status: Pendente
+-----------------------
+Mesa: 3
+Status: Pendente
+-----------------------
+Mesa: 12
+Status: Pendente
+-----------------------
+Mesa: 37
+Status: Pendente
+-----------------------
+Total de mesas encontradas: 4
+=======================
+
+====================
+2025-06-08 15:37:44
+Tipo: Consulta por status (Confirmada)
+--------------------
+Mesa: 1
+Status: Confirmada
+-----------------------
+Total de mesas encontradas: 1
+=======================
+
+====================
+2025-06-08 15:37:46
+Tipo: Consulta por status (Pendente)
+--------------------
+Mesa: 2
+Status: Pendente
+-----------------------
+Mesa: 3
+Status: Pendente
+-----------------------
+Mesa: 12
+Status: Pendente
+-----------------------
+Mesa: 37
+Status: Pendente
+-----------------------
+Total de mesas encontradas: 4
+=======================
+
+====================
+2025-06-08 15:41:56
+Tipo: Consulta por mesa (1)
+--------------------
+ID: 1
+Data: 2025-07-06
+Hora: 10:10
+Mesa: 1
+Pessoas: 1
+Responsável: Sergio
+Status: Confirmada
+Garçom: Mario
+-----------------------
+ID: 6
+Data: 2025-06-10
+Hora: 15:38
+Mesa: 1
+Pessoas: 1
+Responsável: aaa
+Status: Cancelada
+Garçom: N/A
+-----------------------
+Total de reservas encontradas: 2
+=======================
