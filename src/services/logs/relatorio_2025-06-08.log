@@ -878,3 +878,88 @@ Garçom: N/A
 -----------------------
 Total de reservas encontradas: 2
 =======================
+
+====================
+2025-06-08 16:48:57
+Tipo: Consulta por status (Cancelada)
+--------------------
+Mesa: 1
+Status: Cancelada
+-----------------------
+Mesa: 2
+Status: Cancelada
+-----------------------
+Mesa: 3
+Status: Cancelada
+-----------------------
+Total de mesas encontradas: 3
+=======================
+
+====================
+2025-06-08 16:49:16
+Tipo: Consulta por período (2025-06-03 a 2025-06-27)
+--------------------
+ID: 1
+Data: 2025-06-09
+Hora: 21:00
+Mesa: 1
+Pessoas: 1
+Responsável: a
+Status: Cancelada
+Garçom: a
+-----------------------
+ID: 2
+Data: 2025-06-09
+Hora: 21:00
+Mesa: 2
+Pessoas: 2
+Responsável: a
+Status: Cancelada
+Garçom: a
+-----------------------
+ID: 3
+Data: 2025-06-17
+Hora: 20:26
+Mesa: 3
+Pessoas: 23
+Responsável: aaa
+Status: Cancelada
+Garçom: aaaa
+-----------------------
+Total de reservas encontradas: 3
+=======================
+
+====================
+2025-06-08 16:50:10
+Tipo: Consulta por status (Pendente)
+--------------------
+Mesa: 1
+Status: Pendente
+-----------------------
+Total de mesas encontradas: 1
+=======================
+
+====================
+2025-06-08 16:50:21
+Tipo: Consulta por mesa (1)
+--------------------
+ID: 1
+Data: 2025-06-09
+Hora: 21:00
+Mesa: 1
+Pessoas: 1
+Responsável: a
+Status: Cancelada
+Garçom: a
+-----------------------
+ID: 4
+Data: 2025-06-09
+Hora: 22:52
+Mesa: 1
+Pessoas: 12
+Responsável: ddd
+Status: Pendente
+Garçom: aaaaa
+-----------------------
+Total de reservas encontradas: 2
+=======================
