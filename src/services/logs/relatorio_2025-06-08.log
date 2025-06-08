@@ -753,3 +753,35 @@ Status: Confirmada
 -----------------------
 Total de mesas encontradas: 1
 =======================
+
+====================
+2025-06-08 13:51:05
+Tipo: Consulta por mesa (2)
+--------------------
+ID: 2
+Data: 2025-08-08
+Hora: 10:10
+Mesa: 2
+Pessoas: 2
+Responsável: Ana
+Status: Pendente
+Garçom: Mariana
+-----------------------
+Total de reservas encontradas: 1
+=======================
+
+====================
+2025-06-08 13:51:26
+Tipo: Consulta por mesa (12)
+--------------------
+ID: 4
+Data: 2025-11-21
+Hora: 12:12
+Mesa: 12
+Pessoas: 2
+Responsável: kevin
+Status: Pendente
+Garçom: marcela
+-----------------------
+Total de reservas encontradas: 1
+=======================
