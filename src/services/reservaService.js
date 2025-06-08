@@ -63,24 +63,22 @@ async function inserirReserva(db, data, hora, numeroMesa, qtdPessoas, nomeRespon
 }
 
 // Função para confirmar uma reserva
-async function confirmarReserva(db, idReserva) {
-    const reserva = await db.get(`SELECT status FROM reservas WHERE id = ?`, [idReserva]);
-    
-    // ALTERAÇÃO: Retorna objeto de sucesso/falha para o controller, em vez de lançar erro diretamente.
-    if (!reserva) {
-        return { sucesso: false, message: `Reserva ${idReserva} não encontrada.` };
+async function confirmarReserva(db, id, garcom) {
+  try {
+    const reservaExistente = await db.get("SELECT * FROM reservas WHERE id = ?", id);
+    if (!reservaExistente) {
+      return { sucesso: false, message: `Reserva ${id} não encontrada.` };
     }
-    if (reserva.status !== 'Pendente') {
-        return { sucesso: false, message: `Somente reservas pendentes podem ser confirmadas. Status atual: ${reserva.status}.` };
+    if (reservaExistente.status !== "Pendente") {
+      return { sucesso: false, message: `Somente reservas pendentes podem ser confirmadas. Status atual: ${reservaExistente.status}.` };
     }
 
-    const result = await db.run(`UPDATE reservas SET status = 'Confirmada' WHERE id = ?`, [idReserva]);
-    if (result.changes === 0) {
-        // Isso pode acontecer se a reserva foi alterada entre a seleção e a atualização
-        return { sucesso: false, message: `Nenhuma reserva foi atualizada (ID não encontrado ou status já alterado).` };
-    }
-    console.log(`Reserva ID ${idReserva} confirmada.`);
-    return { sucesso: true, message: `Reserva ${idReserva} confirmada com sucesso!` };
+    await db.run("UPDATE reservas SET status = ?, garcom = ? WHERE id = ?", "Confirmada", garcom, id);
+    return { sucesso: true, message: `Reserva ${id} confirmada com sucesso pelo garçom ${garcom}.` };
+  } catch (error) {
+    console.error("Erro ao confirmar reserva no DB:", error.message);
+    throw error;
+  }
 }
 
 // Função para cancelar uma reserva

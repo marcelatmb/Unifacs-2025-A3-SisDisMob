@@ -156,32 +156,23 @@ exports.obterMesasPorStatus = async (req, res) => {
 
 // Função para confirmar uma reserva
 exports.confirmarReserva = async (req, res) => {
+  const { idReserva } = req.params;
+  const { garcom } = req.body; 
+
+  if (!garcom) {
+    return res.status(400).json({ error: "Nome do garçom é obrigatório para confirmar a reserva." });
+  }
+
   try {
-    const idReserva = parseInt(req.params.idReserva, 10);
-
-    if (isNaN(idReserva)) {
-      console.error("Erro: ID de reserva inválido.");
-      return res.status(400).json({ error: "ID de reserva inválido." });
-    }
-
-    // ALTERAÇÃO: O serviço agora retorna um objeto com sucesso/mensagem.
-    const resultado = await service.confirmarReserva(req.db, idReserva);
-
-    if (resultado.sucesso) {
-      res.json({ message: resultado.message });
+     const result = await service.confirmarReserva(req.db, idReserva, garcom);
+    if (result.sucesso) {
+      res.status(200).json({ message: result.message });
     } else {
-      // Se não foi sucesso, a mensagem do serviço indica o motivo (ex: não encontrada, status errado)
-      return res.status(400).json({ // Retorna 400 para erros de lógica de negócio
-        error: "Erro ao confirmar reserva.",
-        detalhe: resultado.message,
-      });
+      res.status(400).json({ error: result.message });
     }
-  } catch (error) {
-    console.error("Erro ao confirmar reserva:", error.message);
-    res.status(500).json({
-      error: "Erro interno ao confirmar reserva.",
-      detalhe: error.message,
-    });
+  } catch (err) {
+    console.error("Erro ao confirmar reserva:", err.message);
+    res.status(500).json({ error: "Erro interno do servidor ao confirmar reserva.", detalhe: err.message });
   }
 };
 

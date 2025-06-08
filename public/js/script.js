@@ -57,7 +57,7 @@ async function cadastrarReserva() {
   const qtd_pessoas = parseInt(document.getElementById("qtdPessoas").value, 10);
   const nome_responsavel = document.getElementById("nomeResponsavel").value;
   const status = "Pendente";
-  const garcom = document.getElementById("garcom").value;
+  const garcom = "";
 
   if (!dataInput.value || !hora || isNaN(numero_mesa) || isNaN(qtd_pessoas) || !nome_responsavel) {
     alert("Por favor, preencha todos os campos obrigatórios corretamente.");
@@ -111,14 +111,22 @@ async function cadastrarReserva() {
 
 async function confirmarReserva() {
   const id = document.getElementById("idReservaConfirma").value;
+  const garcom = document.getElementById("garcom").value;
+
   if (!id) {
     alert("Por favor, informe o ID da reserva para confirmar.");
+    return;
+  }
+  if (!garcom) {
+    alert("Por favor, informe o nome do garçom que está confirmando.");
     return;
   }
 
   try {
     const response = await fetch(`http://localhost:3000/reservas/confirmar/${id}`, {
-      method: "PUT"
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ garcom: garcom })
     });
 
     const res = await response.json();
@@ -126,6 +134,7 @@ async function confirmarReserva() {
     if (response.ok) {
       alert("Reserva confirmada com sucesso!");
       document.getElementById("idReservaConfirma").value = '';
+      document.getElementById("garcom").value = '';
     } else {
       alert("Erro ao confirmar reserva: " + (res.detalhe || res.error || "Erro desconhecido."));
     }
