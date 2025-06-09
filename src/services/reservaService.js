@@ -225,7 +225,7 @@ async function obterMesasPorStatus(db, status) {
 }
 
 async function pegarMesasConfirmadasPorGarcom(db) {
-    const sql = "SELECT garcom, numero_mesa, data, hora FROM reservas WHERE status = 'Confirmada' AND garcom != ''";
+    const sql = "SELECT garcom, numero_mesa, data, hora FROM reservas WHERE status = 'Confirmada' AND garcom != '' ORDER BY garcom";
     const resultado = await db.all(sql);
     if (!resultado || resultado.length === 0) {
         throw new Error("Nada encontrado.");
