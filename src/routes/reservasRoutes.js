@@ -17,4 +17,7 @@ router.put("/confirmar/:idReserva", controller.confirmarReserva);
 
 router.put("/cancelar/:idReserva", controller.cancelarReserva);
 
+router.get("/confirmadas/por-garcom", controller.obterConfirmadasPorGarcom);
+
+
 module.exports = router;

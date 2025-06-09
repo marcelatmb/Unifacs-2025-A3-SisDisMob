@@ -963,3 +963,62 @@ Garçom: aaaaa
 -----------------------
 Total de reservas encontradas: 2
 =======================
+
+====================
+2025-06-08 19:16:12
+Tipo: Consulta por status (Confirmada)
+--------------------
+Mesa: 7
+Status: Confirmada
+-----------------------
+Total de mesas encontradas: 1
+=======================
+
+====================
+2025-06-08 19:16:22
+Tipo: Consulta por status (Confirmada)
+--------------------
+Mesa: 7
+Status: Confirmada
+-----------------------
+Total de mesas encontradas: 1
+=======================
+
+====================
+2025-06-08 19:19:38
+Tipo: Consulta por status (Cancelada)
+--------------------
+Mesa: 2
+Status: Cancelada
+-----------------------
+Mesa: 3
+Status: Cancelada
+-----------------------
+Total de mesas encontradas: 2
+=======================
+
+====================
+2025-06-08 19:19:38
+Tipo: Consulta por status (Cancelada)
+--------------------
+Mesa: 2
+Status: Cancelada
+-----------------------
+Mesa: 3
+Status: Cancelada
+-----------------------
+Total de mesas encontradas: 2
+=======================
+
+====================
+2025-06-08 19:21:44
+Tipo: Consulta por status (Confirmada)
+--------------------
+Mesa: 1
+Status: Confirmada
+-----------------------
+Mesa: 7
+Status: Confirmada
+-----------------------
+Total de mesas encontradas: 2
+=======================

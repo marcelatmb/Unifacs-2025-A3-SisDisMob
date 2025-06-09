@@ -204,3 +204,12 @@ exports.cancelarReserva = async (req, res) => {
     });
   }
 };
+
+exports.obterConfirmadasPorGarcom = (req, res) => {
+  const db = req.db;
+  const { pegarMesasConfirmadasPorGarcom } = require("../services/reservaService");
+  
+  pegarMesasConfirmadasPorGarcom(db)
+    .then(dados => res.send(dados))
+    .catch(err => res.send({ erro: err.message }));
+};

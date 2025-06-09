@@ -220,7 +220,20 @@ async function obterMesasPorStatus(db, status) {
     console.log(`\x1b[32m[Reservas]\x1b[0m Relatório atualizado: ${logPath}`);
 
     return rows;
+
+    
 }
+
+async function pegarMesasConfirmadasPorGarcom(db) {
+    const sql = "SELECT garcom, numero_mesa, data, hora FROM reservas WHERE status = 'Confirmada' AND garcom != ''";
+    const resultado = await db.all(sql);
+    if (!resultado || resultado.length === 0) {
+        throw new Error("Nada encontrado.");
+    }
+    return resultado;
+}
+
+
 
 // Exporta todas as funções para serem usadas em outros módulos
 module.exports = {
@@ -230,5 +243,6 @@ module.exports = {
     cancelarReserva,
     obterReservasPorPeriodo,
     obterReservasPorMesa,
-    obterMesasPorStatus
+    obterMesasPorStatus,
+    pegarMesasConfirmadasPorGarcom
 };

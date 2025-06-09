@@ -32,6 +32,7 @@ function mostrarCamposRelatorio() {
   document.getElementById("camposPeriodo").style.display = "none";
   document.getElementById("camposMesa").style.display = "none";
   document.getElementById("camposStatus").style.display = "none";
+  document.getElementById("camposGarcom").style.display = "none";
 
   // Zera os resultados dos relatórios anteriores
   document.getElementById("relatorioPeriodo").textContent = '';
@@ -45,6 +46,8 @@ function mostrarCamposRelatorio() {
     document.getElementById("camposMesa").style.display = "block";
   } else if (tipoRelatorio === "status") {
     document.getElementById("camposStatus").style.display = "block";
+  } else if (tipoRelatorio === "garcom") {
+    document.getElementById("camposGarcom").style.display = "block";
   }
 }
 
@@ -299,4 +302,15 @@ async function gerarRelatorioPorStatus() {
         relDivStatus.textContent = "Erro ao carregar relatório por status: " + err.message;
         console.error("Erro no relatório por status:", err);
     }
+}
+
+async function gerarRelatorioPorGarcom() {
+    const resposta = await fetch("http://localhost:3000/reservas/confirmadas/por-garcom");
+    const dados = await resposta.json();
+    let texto = "";
+    dados.forEach(r => {
+        texto += `Garçom: ${r.garcom} | Mesa: ${r.numero_mesa} | Data: ${r.data} | Hora: ${r.hora}\n`;
+    });
+
+    document.getElementById("relatorioStatusResult").textContent = texto || "Nenhuma confirmação encontrada";
 }
