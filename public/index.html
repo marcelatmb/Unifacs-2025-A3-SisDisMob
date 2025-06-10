@@ -2,119 +2,113 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Sistema de Reservas</title>
+  <title>Registro e Login</title>
   <link rel="stylesheet" href="./styles/style.css">
+  <link rel="stylesheet" href="./styles/registro.css">
 </head>
 <body>
-  <h1>Sistema de Reservas</h1>
-
-  <label for="tipoUsuario" id="labelTipoUsuario">Tipo de usuário:</label>
-  <select id="tipoUsuario">
-    <option value="">Selecione</option>
-    <option value="atendente">Atendente</option>
-    <option value="garcom">Garçom</option>
-    <option value="gerente">Gerente</option>
-  </select>
-  <button type="button" onclick="mostrarFormulario()" id="btnEntrar">Entrar</button>
-
-  <div id="formAtendente" class="formulario">
-    <h2>Cadastro de Reserva</h2>
-    <input type="date" id="data"><br>
-    <input type="time" id="hora"><br>
-    <input type="number" id="numeroMesa" placeholder="Número da mesa"><br>
-    <input type="number" id="qtdPessoas" placeholder="Quantidade de pessoas"><br>
-    <input type="text" id="nomeResponsavel" placeholder="Nome do responsável"><br>
-    <button type="button" onclick="cadastrarReserva()">Cadastrar</button>
-
-    <h2>Cancelar Ocupação</h2>
-    <input type="text" id="idReservaCancela" placeholder="ID da reserva"><br>
-    <button type="button" onclick="cancelarReserva()">Cancelar</button>
-  </div>
-
-  <div id="formGarcom" class="formulario">
-    <h2>Confirmar Ocupação</h2>
-    <input type="text" id="idReservaConfirma" placeholder="ID da reserva"><br>
-    <input type="text" id="garcom" placeholder="Garçom (opcional)"><br>
-    <button type="button" onclick="confirmarReserva()">Confirmar</button>
-  </div>
-
-  <div id="formGerente" class="formulario">
-    <h2>Opções de Relatório do Gerente</h2>
-    
-    <label for="tipoRelatorio">Selecionar Relatório:</label>
-    <select id="tipoRelatorio" onchange="mostrarCamposRelatorio()">
-      <option value="">Selecione um tipo de relatório</option>
-      <option value="periodo">Reservas por Período</option>
-      <option value="mesa">Reservas por Mesa</option>
-      <option value="status">Mesas por Status</option>
-      <option value="garcom">Confirmadas por Garçom</option>
-    </select>
-    <br><br>
-
-    <div id="camposPeriodo" style="display: none;">
-      <label for="relatorioDataInicio">Data Início:</label>
-      <input type="date" id="relatorioDataInicio"><br>
-      <label for="relatorioDataFim">Data Fim:</label>
-      <input type="date" id="relatorioDataFim"><br>
-      <button type="button" onclick="gerarRelatorio()">Exibir Relatório por Período</button><br>
-    </div>
-
-    <div id="camposMesa" style="display: none;">
-      <label for="relatorioNumeroMesa">Número da Mesa:</label>
-      <input type="number" id="relatorioNumeroMesa" placeholder="Ex: 5"><br>
-      <button type="button" onclick="gerarRelatorioPorMesa()">Exibir Relatório por Mesa</button><br>
-    </div>
-
-    <div id="camposStatus" style="display: none;">
-      <label for="relatorioStatus">Status:</label>
-      <select id="relatorioStatus">
-        <option value="Pendente">Pendente</option>
-        <option value="Confirmada">Confirmada</option>
-        <option value="Cancelada">Cancelada</option>
+  <h1>Registro de Usuário</h1>
+  <button id="toggleRegistro">Registrar nova conta</button>
+  <button id="toggleLogin" style="display:none">Já tem conta? Faça login</button>
+  <div id="registroBox">
+    <form id="formRegistro">
+      <input type="text" id="nome" placeholder="Nome" required><br>
+      <input type="email" id="email" placeholder="Email" required><br>
+      <input type="password" id="senha" placeholder="Senha" required><br>
+      <label for="tipo">Tipo de usuário:</label>
+      <select id="tipo" required>
+        <option value="">Selecione</option>
+        <option value="atendente">Atendente</option>
+        <option value="garcom">Garçom</option>
+        <option value="gerente">Gerente</option>
       </select><br>
-      <button type="button" onclick="gerarRelatorioPorStatus()">Exibir Relatório por Status</button><br>
-    </div>
-
-    <div id="camposGarcom" style="display: none;">
-      <button type="button" onclick="gerarRelatorioPorGarcom()">Exibir Relatório por Garçom</button><br>
-    </div>
-
-    <hr>
-    <h3>Resultados dos Relatórios:</h3>
-    <pre id="relatorioPeriodo"></pre>
-    <pre id="relatorioMesa"></pre>
-    <pre id="relatorioStatusResult"></pre>
+      <button type="submit">Registrar</button>
+    </form>
   </div>
-
-  <script src="./js/script.js"></script>
+  <div id="loginBox" class="active">
+    <form id="formLogin">
+      <input type="email" id="loginEmail" placeholder="Email" required><br>
+      <input type="password" id="loginSenha" placeholder="Senha" required><br>
+      <button type="submit">Entrar</button>
+    </form>
+  </div>
+  <p id="mensagem"></p>
   <script>
-    // Exibe apenas o formulário do tipo de usuário logado
-    function mostrarApenasTipoUsuario() {
-      // Tenta obter o tipo da URL (login) ou do localStorage (caso já esteja logado)
-      const params = new URLSearchParams(window.location.search);
-      let tipo = params.get('tipo');
-      if (!tipo) {
-        const usuario = localStorage.getItem('usuarioLogado');
-        if (usuario) {
-          tipo = JSON.parse(usuario).tipo;
-        }
-      }
-      if (tipo) {
-        document.querySelectorAll('.formulario').forEach(el => el.style.display = 'none');
-        if (tipo === 'atendente') {
-          document.getElementById('formAtendente').style.display = 'block';
-        } else if (tipo === 'garcom') {
-          document.getElementById('formGarcom').style.display = 'block';
-        } else if (tipo === 'gerente') {
-          document.getElementById('formGerente').style.display = 'block';
-        }
-        // Esconde seleção de tipo de usuário e botão entrar
-        document.getElementById('tipoUsuario').style.display = 'none';
-        document.getElementById('labelTipoUsuario').style.display = 'none';
-        document.getElementById('btnEntrar').style.display = 'none';
-      }
+    // Remove funções de localStorage, agora usamos API
+    async function salvarUsuarioAPI(usuario) {
+      const resp = await fetch('/usuarios/registrar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(usuario)
+      });
+      return resp.json();
     }
-    window.onload = mostrarApenasTipoUsuario;
+    async function loginAPI(email, senha) {
+      const resp = await fetch('/usuarios/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, senha })
+      });
+      return resp.json();
+    }
+
+    document.getElementById('formRegistro').onsubmit = async function(e) {
+      e.preventDefault();
+      const nome = document.getElementById('nome').value;
+      const email = document.getElementById('email').value;
+      const senha = document.getElementById('senha').value;
+      const tipo = document.getElementById('tipo').value;
+      if (!nome || !email || !senha || !tipo) {
+        document.getElementById('mensagem').innerText = 'Preencha todos os campos!';
+        return;
+      }
+      const res = await salvarUsuarioAPI({ nome, email, senha, tipo });
+      if (res.erro) {
+        document.getElementById('mensagem').innerText = res.erro;
+      } else {
+        document.getElementById('mensagem').innerText = 'Usuário registrado com sucesso! Faça login.';
+        document.getElementById('formRegistro').reset();
+      }
+    };
+
+    document.getElementById('formLogin').onsubmit = async function(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const senha = document.getElementById('loginSenha').value;
+      const res = await loginAPI(email, senha);
+      if (res.usuario) {
+        localStorage.setItem('usuarioLogado', JSON.stringify(res.usuario));
+        // Redireciona para servicos.html e passa o tipo de usuário na URL
+        window.location.href = 'servicos.html?tipo=' + encodeURIComponent(res.usuario.tipo);
+      } else {
+        document.getElementById('mensagem').innerText = res.erro || 'Email ou senha inválidos!';
+      }
+    };
+
+    // Alternância entre login e registro
+    const registroBox = document.getElementById('registroBox');
+    const loginBox = document.getElementById('loginBox');
+    const toggleRegistro = document.getElementById('toggleRegistro');
+    const toggleLogin = document.getElementById('toggleLogin');
+    toggleRegistro.onclick = function() {
+      registroBox.classList.add('active');
+      loginBox.classList.remove('active');
+      toggleRegistro.style.display = 'none';
+      toggleLogin.style.display = 'inline-block';
+      document.getElementById('mensagem').innerText = '';
+    };
+    toggleLogin.onclick = function() {
+      registroBox.classList.remove('active');
+      loginBox.classList.add('active');
+      toggleRegistro.style.display = 'inline-block';
+      toggleLogin.style.display = 'none';
+      document.getElementById('mensagem').innerText = '';
+    };
+    // Inicia mostrando login
+    registroBox.classList.remove('active');
+    loginBox.classList.add('active');
+    toggleRegistro.style.display = 'inline-block';
+    toggleLogin.style.display = 'none';
   </script>
 </body>
 </html>

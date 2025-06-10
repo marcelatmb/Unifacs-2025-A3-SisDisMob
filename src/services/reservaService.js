@@ -113,7 +113,7 @@ async function obterReservasPorPeriodo(db, dataInicio, dataFim) {
     const now = new Date();
     const dataHoje = now.toISOString().slice(0, 10);
     const horaAgora = now.toLocaleTimeString();
-    const logDir = path.join(__dirname, 'logs');
+    const logDir = path.join(__dirname, '../logs');
     const logPath = path.join(logDir, `relatorio_${dataHoje}.log`);
     await fs.mkdir(logDir, { recursive: true });
 
@@ -150,7 +150,7 @@ async function obterReservasPorMesa(db, numero_mesa) {
     const now = new Date();
     const dataHoje = now.toISOString().slice(0, 10);
     const horaAgora = now.toLocaleTimeString();
-    const logDir = path.join(__dirname, 'logs');
+    const logDir = path.join(__dirname, '../logs');
     const logPath = path.join(logDir, `relatorio_${dataHoje}.log`);
     await fs.mkdir(logDir, { recursive: true });
 
@@ -205,7 +205,7 @@ async function obterMesasPorStatus(db, status) {
     const now = new Date();
     const dataHoje = now.toISOString().slice(0, 10);
     const horaAgora = now.toLocaleTimeString();
-    const logDir = path.join(__dirname, 'logs');
+    const logDir = path.join(__dirname, '../logs');
     const logPath = path.join(logDir, `relatorio_${dataHoje}.log`);
     await fs.mkdir(logDir, { recursive: true });
 
