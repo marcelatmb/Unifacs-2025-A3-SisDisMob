@@ -269,7 +269,7 @@ async function obterReservaPorId(db, id) {
     }
 
     // Retorna reserva com sucesso
-    return { sucesso: true, reserva };
+    return reserva;
 }
 
 

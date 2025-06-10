@@ -199,6 +199,7 @@ exports.cancelarReserva = async (req, res) => {
   }
 };
 
+// Função obter mesas confirmadas por garçom
 exports.obterConfirmadasPorGarcom = (req, res) => {
   const db = req.db;
   const { pegarMesasConfirmadasPorGarcom } = require("../services/reservaService");
@@ -208,6 +209,7 @@ exports.obterConfirmadasPorGarcom = (req, res) => {
     .catch(err => res.send({ erro: err.message }));
 };
 
+// Função obter reservas por id
 exports.obterReservaPorId = async (req, res) => {
   try {
     const idReserva = parseInt(req.params.idReserva, 10);

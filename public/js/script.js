@@ -408,11 +408,7 @@ async function gerarRelatorioPorId() {
   document.getElementById("relatorioMesa").textContent = "";
   document.getElementById("relatorioStatusResult").textContent = "";
 
-  if (
-    !idReserva ||
-    isNaN(parseInt(idReserva, 10)) ||
-    parseInt(idReserva, 10) <= 0
-  ) {
+  if (!idReserva || isNaN(parseInt(idReserva, 10)) || parseInt(idReserva, 10) <= 0) {
     relDivId.textContent = "Por favor, informe um ID de reserva válido.";
     alert("Por favor, informe um ID de reserva válido.");
     return;
@@ -421,16 +417,14 @@ async function gerarRelatorioPorId() {
   relDivId.textContent = "Carregando relatório por ID...";
 
   try {
-    const response = await fetch(
-      `http://localhost:3000/reservas/id/${idReserva}`
-    );
+    const response = await fetch(`http://localhost:3000/reservas/id/${idReserva}`);
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       throw new Error(
         errorData.detalhe ||
-          errorData.error ||
-          `Erro HTTP: ${response.status} ${response.statusText}`
+        errorData.error ||
+        `Erro HTTP: ${response.status} ${response.statusText}`
       );
     }
 
@@ -439,20 +433,20 @@ async function gerarRelatorioPorId() {
 
     if (reserva) {
       relDivId.textContent = `
-      ID: ${reserva.id}
-      Nome: ${reserva.nome_responsavel}
-      Data: ${reserva.data}
-      Hora: ${reserva.hora}
-      Mesa: ${reserva.numero_mesa}
-      Status: ${reserva.status}
-      Garçom: ${reserva.garcom || "N/A"}
+ID: ${reserva.id}
+Nome: ${reserva.nome_responsavel}
+Data: ${reserva.data}
+Hora: ${reserva.hora}
+Mesa: ${reserva.numero_mesa}
+Status: ${reserva.status}
+Garçom: ${reserva.garcom || "N/A"}
       `;
     } else {
       relDivId.textContent = `Nenhuma reserva encontrada para o ID ${idReserva}.`;
     }
   } catch (err) {
-    relDivId.textContent =
-      "Erro ao carregar relatório por ID: " + err.message;
+    relDivId.textContent = "Erro ao carregar relatório por ID: " + err.message;
     console.error("Erro no relatório por ID:", err);
   }
 }
+
