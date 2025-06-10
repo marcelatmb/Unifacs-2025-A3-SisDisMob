@@ -8,14 +8,14 @@
 <body>
   <h1>Sistema de Reservas</h1>
 
-  <label for="tipoUsuario">Tipo de usuário:</label>
+  <label for="tipoUsuario" id="labelTipoUsuario">Tipo de usuário:</label>
   <select id="tipoUsuario">
     <option value="">Selecione</option>
     <option value="atendente">Atendente</option>
     <option value="garcom">Garçom</option>
     <option value="gerente">Gerente</option>
   </select>
-  <button type="button" onclick="mostrarFormulario()">Entrar</button>
+  <button type="button" onclick="mostrarFormulario()" id="btnEntrar">Entrar</button>
 
   <div id="formAtendente" class="formulario">
     <h2>Cadastro de Reserva</h2>
@@ -87,5 +87,34 @@
   </div>
 
   <script src="./js/script.js"></script>
+  <script>
+    // Exibe apenas o formulário do tipo de usuário logado
+    function mostrarApenasTipoUsuario() {
+      // Tenta obter o tipo da URL (login) ou do localStorage (caso já esteja logado)
+      const params = new URLSearchParams(window.location.search);
+      let tipo = params.get('tipo');
+      if (!tipo) {
+        const usuario = localStorage.getItem('usuarioLogado');
+        if (usuario) {
+          tipo = JSON.parse(usuario).tipo;
+        }
+      }
+      if (tipo) {
+        document.querySelectorAll('.formulario').forEach(el => el.style.display = 'none');
+        if (tipo === 'atendente') {
+          document.getElementById('formAtendente').style.display = 'block';
+        } else if (tipo === 'garcom') {
+          document.getElementById('formGarcom').style.display = 'block';
+        } else if (tipo === 'gerente') {
+          document.getElementById('formGerente').style.display = 'block';
+        }
+        // Esconde seleção de tipo de usuário e botão entrar
+        document.getElementById('tipoUsuario').style.display = 'none';
+        document.getElementById('labelTipoUsuario').style.display = 'none';
+        document.getElementById('btnEntrar').style.display = 'none';
+      }
+    }
+    window.onload = mostrarApenasTipoUsuario;
+  </script>
 </body>
 </html>

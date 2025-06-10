@@ -4,6 +4,8 @@ const rotasApi = require("./routes/reservasRoutes");
 const { criarTabelaReservas } = require("./services/reservaService");
 const path = require("path");
 const cors = require("cors");
+const usuarioRoutes = require("./routes/usuarioRoutes");
+const { criarTabelaUsuarios } = require("./models/usuario");
 
 const PORT = 3000;
 
@@ -11,6 +13,7 @@ const PORT = 3000;
   try {
     const db = await abrirConexao();
     await criarTabelaReservas(db);
+    await criarTabelaUsuarios(db);
 
     const app = express();
 
@@ -27,6 +30,7 @@ const PORT = 3000;
 
     // Usa o router para as rotas da API de reservas
     app.use("/reservas", rotasApi);
+    app.use("/usuarios", usuarioRoutes);
 
     app.listen(PORT, () => {
       console.log(`Servidor rodando na porta ${PORT}`);
