@@ -29,12 +29,11 @@ async function inserirReserva(db, data, hora, numeroMesa, qtdPessoas, nomeRespon
         throw new Error(`Status inválido: ${status}. Use apenas: ${STATUS_VALIDOS.join(', ')}`);
     }
 
-    // ALTERAÇÃO: Validação para impedir reservas em datas passadas.
+    // Validação para impedir reservas em datas passadas, comparando apenas a data
     const hoje = new Date();
-    // Zera a hora para comparar apenas a data (dia, mês, ano)
     hoje.setHours(0, 0, 0, 0); 
     const dataReserva = new Date(data);
-    dataReserva.setHours(0, 0, 0, 0); // Zera a hora para comparar apenas a data
+    dataReserva.setHours(0, 0, 0, 0);
 
     if (dataReserva < hoje) {
         throw new Error("Não é possível cadastrar uma reserva para uma data passada.");
@@ -224,6 +223,7 @@ async function obterMesasPorStatus(db, status) {
     
 }
 
+// Funçãp para pesquisar as mesas confirmadas por garçom
 async function pegarMesasConfirmadasPorGarcom(db) {
     const sql = "SELECT garcom, numero_mesa, data, hora FROM reservas WHERE status = 'Confirmada' AND garcom != '' ORDER BY garcom";
     const resultado = await db.all(sql);
@@ -233,6 +233,44 @@ async function pegarMesasConfirmadasPorGarcom(db) {
     return resultado;
 }
 
+async function obterReservaPorId(db, id) {
+    // Busca a reserva pelo id
+    const reserva = await db.get(`SELECT * FROM reservas WHERE id = ?`, [id]);
+
+    if (!reserva) {
+        throw new Error(`Reserva com ID ${id} não encontrada.`);
+    }
+
+    try {
+        // Preparação do log
+        const now = new Date();
+        const dataHoje = now.toISOString().slice(0, 10);
+        const horaAgora = now.toLocaleTimeString();
+        const logDir = path.join(__dirname, '../logs');
+        const logPath = path.join(logDir, `relatorio_${dataHoje}.log`);
+
+        await fs.mkdir(logDir, { recursive: true });
+
+        let logEntry = `\n====================\n${dataHoje} ${horaAgora}\nTipo: Consulta por ID (${id})\n--------------------\n`;
+        logEntry += `ID: ${reserva.id}\n`;
+        logEntry += `Data: ${reserva.data}\n`;
+        logEntry += `Hora: ${reserva.hora}\n`;
+        logEntry += `Mesa: ${reserva.numero_mesa}\n`;
+        logEntry += `Pessoas: ${reserva.qtd_pessoas}\n`;
+        logEntry += `Responsável: ${reserva.nome_responsavel}\n`;
+        logEntry += `Status: ${reserva.status}\n`;
+        logEntry += `Garçom: ${reserva.garcom || 'N/A'}\n`;
+        logEntry += `=======================\n`;
+
+        await fs.appendFile(logPath, logEntry, 'utf8');
+        console.log(`\x1b[32m[Reservas]\x1b[0m Relatório atualizado: ${logPath}`);
+    } catch (err) {
+        console.error('Erro ao escrever log:', err);
+    }
+
+    // Retorna reserva com sucesso
+    return { sucesso: true, reserva };
+}
 
 
 // Exporta todas as funções para serem usadas em outros módulos
@@ -244,5 +282,6 @@ module.exports = {
     obterReservasPorPeriodo,
     obterReservasPorMesa,
     obterMesasPorStatus,
-    pegarMesasConfirmadasPorGarcom
+    pegarMesasConfirmadasPorGarcom,
+    obterReservaPorId
 };

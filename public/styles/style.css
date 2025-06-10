@@ -1,4 +1,103 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+h1 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+h2, h3 {
+  color: #34495e;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+label {
+  font-weight: 600;
+  margin-top: 8px;
+  display: block;
+  font-size: 14px;
+}
+
+input, select, button {
+  width: 100%;
+  max-width: 300px;
+  padding: 6px 10px;
+  margin-top: 4px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+input:focus, select:focus {
+  border-color: #2980b9;
+  outline: none;
+}
+
+button {
+  background-color: #2980b9;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+  padding: 8px 12px;
+}
+
+button:hover {
+  background-color: #3498db;
+}
+
 .formulario {
   display: none;
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
   margin-top: 20px;
+}
+
+pre {
+  background-color: #ecf0f1;
+  padding: 8px;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 13px;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 16px 0;
+}
+
+#btnEntrar {
+  display: block;
+  margin-top: 8px;
+  max-width: 180px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#tipoUsuario {
+  max-width: 180px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+#labelTipoUsuario {
+  text-align: center;
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
 }

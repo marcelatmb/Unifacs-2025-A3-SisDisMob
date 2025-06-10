@@ -48,6 +48,7 @@
       <option value="mesa">Reservas por Mesa</option>
       <option value="status">Mesas por Status</option>
       <option value="garcom">Confirmadas por Garçom</option>
+      <option value="idReserva">Reserva por ID</option>
     </select>
     <br><br>
 
@@ -56,7 +57,7 @@
       <input type="date" id="relatorioDataInicio"><br>
       <label for="relatorioDataFim">Data Fim:</label>
       <input type="date" id="relatorioDataFim"><br>
-      <button type="button" onclick="gerarRelatorio()">Exibir Relatório por Período</button><br>
+      <button type="button" onclick="gerarRelatorioPorPeriodo()">Exibir Relatório por Período</button><br>
     </div>
 
     <div id="camposMesa" style="display: none;">
@@ -79,11 +80,19 @@
       <button type="button" onclick="gerarRelatorioPorGarcom()">Exibir Relatório por Garçom</button><br>
     </div>
 
+    <div id="camposId" style="display: none;">
+      <label for="relatorioIdReserva">Id da Reserva:</label>
+      <input type="number" id="relatorioIdReserva" placeholder="Ex: 123"><br>
+      <button type="button" onclick="gerarRelatorioPorId()">Exibir Relatório por ID</button><br>
+    </div>
+    
     <hr>
     <h3>Resultados dos Relatórios:</h3>
     <pre id="relatorioPeriodo"></pre>
     <pre id="relatorioMesa"></pre>
     <pre id="relatorioStatusResult"></pre>
+    <pre id="relatorioId"></pre>
+
   </div>
 
   <script src="./js/script.js"></script>

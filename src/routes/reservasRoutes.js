@@ -3,6 +3,8 @@ const controller = require("../controllers/reservasController");
 
 const router = express.Router();
 
+// Rotas da Api do código
+
 router.get("/", controller.bemVindo);
 
 router.post("/", controller.criarReserva);
@@ -19,5 +21,6 @@ router.put("/cancelar/:idReserva", controller.cancelarReserva);
 
 router.get("/confirmadas/por-garcom", controller.obterConfirmadasPorGarcom);
 
+router.get("/id/:idReserva", controller.obterReservaPorId);
 
 module.exports = router;

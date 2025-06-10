@@ -1,14 +1,16 @@
 // Função para mostrar o formulário baseado no tipo de usuário selecionado
 function mostrarFormulario() {
   const tipo = document.getElementById("tipoUsuario").value;
-  document.querySelectorAll(".formulario").forEach(el => el.style.display = "none");
+  document
+    .querySelectorAll(".formulario")
+    .forEach((el) => (el.style.display = "none"));
 
   if (tipo === "atendente") {
     document.getElementById("formAtendente").style.display = "block";
     const today = new Date();
     const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
+    const dd = String(today.getDate()).padStart(2, "0");
     document.getElementById("data").min = `${yyyy}-${mm}-${dd}`;
   }
   if (tipo === "garcom") {
@@ -17,27 +19,29 @@ function mostrarFormulario() {
   if (tipo === "cancelar") {
     document.getElementById("formCancelar").style.display = "block";
   }
-  // ALTERAÇÃO: Apenas um formulário de Gerente agora, com opções internas
+
   if (tipo === "gerente") {
     document.getElementById("formGerente").style.display = "block";
     mostrarCamposRelatorio(); // Chama para inicializar a exibição correta dos campos
   }
 }
 
-// NOVA FUNÇÃO: Controla quais campos de relatório são visíveis dentro do formGerente
+//Controla quais campos de relatório são visíveis dentro do formGerente
 function mostrarCamposRelatorio() {
   const tipoRelatorio = document.getElementById("tipoRelatorio").value;
-  
+
   // Esconde todos os campos de relatório por padrão
   document.getElementById("camposPeriodo").style.display = "none";
   document.getElementById("camposMesa").style.display = "none";
   document.getElementById("camposStatus").style.display = "none";
   document.getElementById("camposGarcom").style.display = "none";
+  document.getElementById("camposId").style.display = "none";
 
   // Zera os resultados dos relatórios anteriores
-  document.getElementById("relatorioPeriodo").textContent = '';
-  document.getElementById("relatorioMesa").textContent = '';
-  document.getElementById("relatorioStatusResult").textContent = '';
+  document.getElementById("relatorioPeriodo").textContent = "";
+  document.getElementById("relatorioMesa").textContent = "";
+  document.getElementById("relatorioStatusResult").textContent = "";
+  document.getElementById("relatorioIdReserva").textContent = "";
 
   // Mostra apenas os campos relevantes para o tipo de relatório selecionado
   if (tipoRelatorio === "periodo") {
@@ -48,9 +52,10 @@ function mostrarCamposRelatorio() {
     document.getElementById("camposStatus").style.display = "block";
   } else if (tipoRelatorio === "garcom") {
     document.getElementById("camposGarcom").style.display = "block";
+  } else if (tipoRelatorio === "idReserva") {
+    document.getElementById("camposId").style.display = "block";
   }
 }
-
 
 // Função assíncrona para cadastrar uma nova reserva
 async function cadastrarReserva() {
@@ -62,7 +67,13 @@ async function cadastrarReserva() {
   const status = "Pendente";
   const garcom = "";
 
-  if (!dataInput.value || !hora || isNaN(numero_mesa) || isNaN(qtd_pessoas) || !nome_responsavel) {
+  if (
+    !dataInput.value ||
+    !hora ||
+    isNaN(numero_mesa) ||
+    isNaN(qtd_pessoas) ||
+    !nome_responsavel
+  ) {
     alert("Por favor, preencha todos os campos obrigatórios corretamente.");
     return;
   }
@@ -77,35 +88,37 @@ async function cadastrarReserva() {
     return;
   }
 
-  const payload = { 
-    data: dataInput.value, 
-    hora, 
-    numero_mesa, 
-    qtd_pessoas, 
-    nome_responsavel, 
-    status, 
-    garcom 
+  const payload = {
+    data: dataInput.value,
+    hora,
+    numero_mesa,
+    qtd_pessoas,
+    nome_responsavel,
+    status,
+    garcom,
   };
 
   try {
     const response = await fetch("http://localhost:3000/reservas", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     });
 
-    const res = await response.json(); 
-    
+    const res = await response.json();
+
     if (response.ok) {
-      alert("Reserva cadastrada com sucesso!");
-      dataInput.value = '';
-      document.getElementById("hora").value = '';
-      document.getElementById("numeroMesa").value = '';
-      document.getElementById("qtdPessoas").value = '';
-      document.getElementById("nomeResponsavel").value = '';
-      document.getElementById("garcom").value = '';
+      alert("Reserva cadastrada com sucesso! ");
+      dataInput.value = "";
+      document.getElementById("hora").value = "";
+      document.getElementById("numeroMesa").value = "";
+      document.getElementById("qtdPessoas").value = "";
+      document.getElementById("nomeResponsavel").value = "";
     } else {
-      alert("Erro ao cadastrar reserva: " + (res.detalhe || res.error || "Erro desconhecido."));
+      alert(
+        "Erro ao cadastrar reserva: " +
+          (res.detalhe || res.error || "Erro desconhecido.")
+      );
     }
   } catch (err) {
     alert("Erro de conexão ao cadastrar reserva: " + err.message);
@@ -126,20 +139,26 @@ async function confirmarReserva() {
   }
 
   try {
-    const response = await fetch(`http://localhost:3000/reservas/confirmar/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ garcom: garcom })
-    });
+    const response = await fetch(
+      `http://localhost:3000/reservas/confirmar/${id}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ garcom: garcom }),
+      }
+    );
 
     const res = await response.json();
 
     if (response.ok) {
       alert("Reserva confirmada com sucesso!");
-      document.getElementById("idReservaConfirma").value = '';
-      document.getElementById("garcom").value = '';
+      document.getElementById("idReservaConfirma").value = "";
+      document.getElementById("garcom").value = "";
     } else {
-      alert("Erro ao confirmar reserva: " + (res.detalhe || res.error || "Erro desconhecido."));
+      alert(
+        "Erro ao confirmar reserva: " +
+          (res.detalhe || res.error || "Erro desconhecido.")
+      );
     }
   } catch (err) {
     alert("Erro de conexão ao confirmar reserva: " + err.message);
@@ -154,17 +173,23 @@ async function cancelarReserva() {
   }
 
   try {
-    const response = await fetch(`http://localhost:3000/reservas/cancelar/${id}`, {
-      method: "PUT"
-    });
+    const response = await fetch(
+      `http://localhost:3000/reservas/cancelar/${id}`,
+      {
+        method: "PUT",
+      }
+    );
 
     const res = await response.json();
 
     if (response.ok) {
       alert("Reserva cancelada com sucesso!");
-      document.getElementById("idReservaCancela").value = '';
+      document.getElementById("idReservaCancela").value = "";
     } else {
-      alert("Erro ao cancelar reserva: " + (res.detalhe || res.error || "Erro desconhecido."));
+      alert(
+        "Erro ao cancelar reserva: " +
+          (res.detalhe || res.error || "Erro desconhecido.")
+      );
     }
   } catch (err) {
     alert("Erro de conexão ao cancelar reserva: " + err.message);
@@ -172,18 +197,18 @@ async function cancelarReserva() {
 }
 
 // Função assíncrona para gerar e exibir um relatório de reservas por período
-async function gerarRelatorio() {
-  // ALTERAÇÃO: Aponta para a área de resultado específica para este relatório
+async function gerarRelatorioPorPeriodo() {
   const relDiv = document.getElementById("relatorioPeriodo");
-  const dataInicio = document.getElementById("relatorioDataInicio").value; 
+  const dataInicio = document.getElementById("relatorioDataInicio").value;
   const dataFim = document.getElementById("relatorioDataFim").value;
 
   // Limpa outras áreas de relatório quando este é ativado
-  document.getElementById("relatorioMesa").textContent = '';
-  document.getElementById("relatorioStatusResult").textContent = '';
+  document.getElementById("relatorioMesa").textContent = "";
+  document.getElementById("relatorioStatusResult").textContent = "";
 
   if (!dataInicio || !dataFim) {
-    relDiv.textContent = "Por favor, informe a Data Início e a Data Fim para o relatório.";
+    relDiv.textContent =
+      "Por favor, informe a Data Início e a Data Fim para o relatório.";
     alert("Por favor, informe a Data Início e a Data Fim para o relatório.");
     return;
   }
@@ -197,22 +222,36 @@ async function gerarRelatorio() {
   relDiv.textContent = "Carregando relatório por período...";
 
   try {
-    const response = await fetch(`http://localhost:3000/reservas/relatorio?dataInicio=${dataInicio}&dataFim=${dataFim}`);
-    
+    const response = await fetch(
+      `http://localhost:3000/reservas/relatorio?dataInicio=${dataInicio}&dataFim=${dataFim}`
+    );
+
     if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.detalhe || errorData.error || `Erro HTTP: ${response.status} ${response.statusText}`);
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(
+        errorData.detalhe ||
+          errorData.error ||
+          `Erro HTTP: ${response.status} ${response.statusText}`
+      );
     }
 
     const json = await response.json();
     const reservas = json.reservas || [];
 
     if (reservas.length > 0) {
-        relDiv.textContent = reservas.map(r =>
-          `ID: ${r.id}\nNome: ${r.nome_responsavel}\nData: ${r.data}\nHora: ${r.hora}\nMesa: ${r.numero_mesa}\nStatus: ${r.status}\nGarçom: ${r.garcom || 'N/A'}\n---`
-        ).join("\n");
+      relDiv.textContent = reservas
+        .map(
+          (r) =>
+            `ID: ${r.id}\nNome: ${r.nome_responsavel}\nData: ${r.data}\nHora: ${
+              r.hora
+            }\nMesa: ${r.numero_mesa}\nStatus: ${r.status}\nGarçom: ${
+              r.garcom || "N/A"
+            }\n---`
+        )
+        .join("\n");
     } else {
-        relDiv.textContent = "Nenhuma reserva encontrada para o período especificado.";
+      relDiv.textContent =
+        "Nenhuma reserva encontrada para o período especificado.";
     }
   } catch (err) {
     relDiv.textContent = "Erro ao carregar relatório: " + err.message;
@@ -222,95 +261,198 @@ async function gerarRelatorio() {
 
 // Função assíncrona para gerar e exibir um relatório de reservas por número de mesa
 async function gerarRelatorioPorMesa() {
-    // ALTERAÇÃO: Aponta para a área de resultado específica para este relatório
-    const relDivMesa = document.getElementById("relatorioMesa");
-    const numeroMesa = document.getElementById("relatorioNumeroMesa").value;
+  const relDivMesa = document.getElementById("relatorioMesa");
+  const numeroMesa = document.getElementById("relatorioNumeroMesa").value;
 
-    // Limpa outras áreas de relatório quando este é ativado
-    document.getElementById("relatorioPeriodo").textContent = '';
-    document.getElementById("relatorioStatusResult").textContent = '';
+  // Limpa outras áreas de relatório quando este é ativado
+  document.getElementById("relatorioPeriodo").textContent = "";
+  document.getElementById("relatorioStatusResult").textContent = "";
 
-    if (!numeroMesa || isNaN(parseInt(numeroMesa, 10)) || parseInt(numeroMesa, 10) <= 0) {
-        relDivMesa.textContent = "Por favor, informe um número de mesa válido.";
-        alert("Por favor, informe um número de mesa válido.");
-        return;
+  if (
+    !numeroMesa ||
+    isNaN(parseInt(numeroMesa, 10)) ||
+    parseInt(numeroMesa, 10) <= 0
+  ) {
+    relDivMesa.textContent = "Por favor, informe um número de mesa válido.";
+    alert("Por favor, informe um número de mesa válido.");
+    return;
+  }
+
+  relDivMesa.textContent = "Carregando relatório por mesa...";
+
+  try {
+    const response = await fetch(
+      `http://localhost:3000/reservas/mesa/${numeroMesa}`
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(
+        errorData.detalhe ||
+          errorData.error ||
+          `Erro HTTP: ${response.status} ${response.statusText}`
+      );
     }
 
-    relDivMesa.textContent = "Carregando relatório por mesa...";
+    const json = await response.json();
+    const reservas = json.reservas || [];
 
-    try {
-        const response = await fetch(`http://localhost:3000/reservas/mesa/${numeroMesa}`);
-        
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.detalhe || errorData.error || `Erro HTTP: ${response.status} ${response.statusText}`);
-        }
-
-        const json = await response.json();
-        const reservas = json.reservas || [];
-
-        if (reservas.length > 0) {
-            relDivMesa.textContent = reservas.map(r =>
-              `ID: ${r.id}\nNome: ${r.nome_responsavel}\nData: ${r.data}\nHora: ${r.hora}\nMesa: ${r.numero_mesa}\nStatus: ${r.status}\nGarçom: ${r.garcom || 'N/A'}\n---`
-            ).join("\n");
-        } else {
-            relDivMesa.textContent = `Nenhuma reserva encontrada para a mesa ${numeroMesa}.`;
-        }
-    } catch (err) {
-        relDivMesa.textContent = "Erro ao carregar relatório por mesa: " + err.message;
-        console.error("Erro no relatório por mesa:", err);
+    if (reservas.length > 0) {
+      relDivMesa.textContent = reservas
+        .map(
+          (r) =>
+            `ID: ${r.id}\nNome: ${r.nome_responsavel}\nData: ${r.data}\nHora: ${
+              r.hora
+            }\nMesa: ${r.numero_mesa}\nStatus: ${r.status}\nGarçom: ${
+              r.garcom || "N/A"
+            }\n---`
+        )
+        .join("\n");
+    } else {
+      relDivMesa.textContent = `Nenhuma reserva encontrada para a mesa ${numeroMesa}.`;
     }
+  } catch (err) {
+    relDivMesa.textContent =
+      "Erro ao carregar relatório por mesa: " + err.message;
+    console.error("Erro no relatório por mesa:", err);
+  }
 }
 
 // Função assíncrona para gerar e exibir um relatório de mesas por status
 async function gerarRelatorioPorStatus() {
-    const relDivStatus = document.getElementById("relatorioStatusResult");
-    const statusSelecionado = document.getElementById("relatorioStatus").value;
+  const relDivStatus = document.getElementById("relatorioStatusResult");
+  const statusSelecionado = document.getElementById("relatorioStatus").value;
 
-    // Limpa outras áreas de relatório quando este é ativado
-    document.getElementById("relatorioPeriodo").textContent = '';
-    document.getElementById("relatorioMesa").textContent = '';
+  // Limpa outras áreas de relatório quando este é ativado
+  document.getElementById("relatorioPeriodo").textContent = "";
+  document.getElementById("relatorioMesa").textContent = "";
 
+  if (!statusSelecionado) {
+    relDivStatus.textContent =
+      "Por favor, selecione um status para o relatório.";
+    alert("Por favor, selecione um status para o relatório.");
+    return;
+  }
 
-    if (!statusSelecionado) {
-        relDivStatus.textContent = "Por favor, selecione um status para o relatório.";
-        alert("Por favor, selecione um status para o relatório.");
-        return;
+  relDivStatus.textContent = "Carregando relatório por status...";
+
+  try {
+    const response = await fetch(
+      `http://localhost:3000/reservas/status/${statusSelecionado}`
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(
+        errorData.detalhe ||
+          errorData.error ||
+          `Erro HTTP: ${response.status} ${response.statusText}`
+      );
     }
 
-    relDivStatus.textContent = "Carregando relatório por status...";
+    const json = await response.json();
+    const mesas = json.mesas || [];
 
-    try {
-        const response = await fetch(`http://localhost:3000/reservas/status/${statusSelecionado}`);
-        
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.detalhe || errorData.error || `Erro HTTP: ${response.status} ${response.statusText}`);
-        }
-
-        const json = await response.json();
-        const mesas = json.mesas || [];
-
-        if (mesas.length > 0) {
-            relDivStatus.textContent = mesas.map(m =>
-              `Mesa: ${m.numero_mesa}\nStatus: ${m.status}\n---`
-            ).join("\n");
-        } else {
-            relDivStatus.textContent = `Nenhuma mesa encontrada com o status ${statusSelecionado}.`;
-        }
-    } catch (err) {
-        relDivStatus.textContent = "Erro ao carregar relatório por status: " + err.message;
-        console.error("Erro no relatório por status:", err);
+    if (mesas.length > 0) {
+      relDivStatus.textContent = mesas
+        .map((m) => `Mesa: ${m.numero_mesa}\nStatus: ${m.status}\n---`)
+        .join("\n");
+    } else {
+      relDivStatus.textContent = `Nenhuma mesa encontrada com o status ${statusSelecionado}.`;
     }
+  } catch (err) {
+    relDivStatus.textContent =
+      "Erro ao carregar relatório por status: " + err.message;
+    console.error("Erro no relatório por status:", err);
+  }
 }
 
 async function gerarRelatorioPorGarcom() {
-    const resposta = await fetch("http://localhost:3000/reservas/confirmadas/por-garcom");
-    const dados = await resposta.json();
-    let texto = "";
-    dados.forEach(r => {
-        texto += `Garçom: ${r.garcom} | Mesa: ${r.numero_mesa} | Data: ${r.data} | Hora: ${r.hora}\n`;
-    });
+  const relDiv = document.getElementById("relatorioStatusResult");
+  relDiv.textContent = "Carregando relatório por garçom...";
 
-    document.getElementById("relatorioStatusResult").textContent = texto || "Nenhuma confirmação encontrada";
+  try {
+    const resposta = await fetch(
+      "http://localhost:3000/reservas/confirmadas/por-garcom"
+    );
+    if (!resposta.ok) {
+      const errorData = await resposta.json().catch(() => ({}));
+      throw new Error(
+        errorData.detalhe || errorData.error || `Erro HTTP: ${resposta.status}`
+      );
+    }
+    const dados = await resposta.json();
+    if (dados.length > 0) {
+      let texto = "";
+      dados.forEach((r) => {
+        texto += `Garçom: ${r.garcom} | Mesa: ${r.numero_mesa} | Data: ${r.data} | Hora: ${r.hora}\n`;
+      });
+      relDiv.textContent = texto;
+    } else {
+      relDiv.textContent = "Nenhuma confirmação encontrada";
+    }
+  } catch (err) {
+    relDiv.textContent =
+      "Erro ao carregar relatório por garçom: " + err.message;
+    console.error("Erro no relatório por garçom:", err);
+  }
+}
+
+// Função assíncrona para gerar e exibir um relatório de reserva por ID
+
+async function gerarRelatorioPorId() {
+  const relDivId = document.getElementById("relatorioId");
+  const idReserva = document.getElementById("relatorioIdReserva").value;
+
+  // Limpa outras áreas de relatório quando este é ativado
+  document.getElementById("relatorioMesa").textContent = "";
+  document.getElementById("relatorioStatusResult").textContent = "";
+
+  if (
+    !idReserva ||
+    isNaN(parseInt(idReserva, 10)) ||
+    parseInt(idReserva, 10) <= 0
+  ) {
+    relDivId.textContent = "Por favor, informe um ID de reserva válido.";
+    alert("Por favor, informe um ID de reserva válido.");
+    return;
+  }
+
+  relDivId.textContent = "Carregando relatório por ID...";
+
+  try {
+    const response = await fetch(
+      `http://localhost:3000/reservas/id/${idReserva}`
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(
+        errorData.detalhe ||
+          errorData.error ||
+          `Erro HTTP: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const json = await response.json();
+    const reserva = json.reserva;
+
+    if (reserva) {
+      relDivId.textContent = `
+      ID: ${reserva.id}
+      Nome: ${reserva.nome_responsavel}
+      Data: ${reserva.data}
+      Hora: ${reserva.hora}
+      Mesa: ${reserva.numero_mesa}
+      Status: ${reserva.status}
+      Garçom: ${reserva.garcom || "N/A"}
+      `;
+    } else {
+      relDivId.textContent = `Nenhuma reserva encontrada para o ID ${idReserva}.`;
+    }
+  } catch (err) {
+    relDivId.textContent =
+      "Erro ao carregar relatório por ID: " + err.message;
+    console.error("Erro no relatório por ID:", err);
+  }
 }

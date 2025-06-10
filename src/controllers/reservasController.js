@@ -17,8 +17,6 @@ exports.criarReserva = async (req, res) => {
       garcom,
     } = req.body;
 
-    // ALTERAÇÃO: 'status' foi removido da desestruturação e da validação, pois será definido no serviço.
-    // Garçom é opcional, então não é validado aqui.
     if (
       !data ||
       !hora ||
@@ -32,8 +30,6 @@ exports.criarReserva = async (req, res) => {
         .json({ error: "Todos os campos obrigatórios devem ser preenchidos." });
     }
 
-    // ALTERAÇÃO: O status agora é passado explicitamente como 'Pendente' para o serviço.
-    // A validação de data futura também é feita no serviço.
     await service.inserirReserva(
       req.db,
       data,
@@ -134,8 +130,6 @@ exports.obterMesasPorStatus = async (req, res) => {
 
     const mesas = await service.obterMesasPorStatus(req.db, status);
 
-    // ALTERAÇÃO: A verificação de mesas vazias agora é feita pelo serviço, que lança um erro.
-    // Se o erro for de 'Nenhuma mesa encontrada', retorna 404.
     res.json({
       message: "Relatório gerado com sucesso! Verifique o diretório de logs.",
       mesas,
@@ -212,4 +206,27 @@ exports.obterConfirmadasPorGarcom = (req, res) => {
   pegarMesasConfirmadasPorGarcom(db)
     .then(dados => res.send(dados))
     .catch(err => res.send({ erro: err.message }));
+};
+
+exports.obterReservaPorId = async (req, res) => {
+  try {
+    const idReserva = parseInt(req.params.idReserva, 10);
+    if (isNaN(idReserva) || idReserva <= 0) {
+      console.error("Erro: ID de reserva inválido.");
+      return res.status(400).json({ error: "ID de reserva inválido." });
+    }
+
+    const reserva = await service.obterReservaPorId(req.db, idReserva);
+    if (!reserva) {
+      return res.status(404).json({ error: "Reserva não encontrada." });
+    }
+
+    res.json({ message: "Reserva encontrada com sucesso!", reserva });
+  } catch (error) {
+    console.error("Erro ao obter reserva por ID:", error.message);
+    res.status(500).json({
+      error: "Erro interno ao obter reserva por ID.",
+      detalhe: error.message,
+    });
+  }
 };
