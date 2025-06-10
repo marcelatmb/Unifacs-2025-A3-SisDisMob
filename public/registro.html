@@ -4,32 +4,35 @@
   <meta charset="UTF-8">
   <title>Registro e Login</title>
   <link rel="stylesheet" href="./styles/style.css">
+  <link rel="stylesheet" href="./styles/registro.css">
 </head>
 <body>
   <h1>Registro de Usuário</h1>
-  <form id="formRegistro">
-    <input type="text" id="nome" placeholder="Nome" required><br>
-    <input type="email" id="email" placeholder="Email" required><br>
-    <input type="password" id="senha" placeholder="Senha" required><br>
-    <label for="tipo">Tipo de usuário:</label>
-    <select id="tipo" required>
-      <option value="">Selecione</option>
-      <option value="atendente">Atendente</option>
-      <option value="garcom">Garçom</option>
-      <option value="gerente">Gerente</option>
-    </select><br>
-    <button type="submit">Registrar</button>
-  </form>
-
-  <h2>Já tem conta? Faça login</h2>
-  <form id="formLogin">
-    <input type="email" id="loginEmail" placeholder="Email" required><br>
-    <input type="password" id="loginSenha" placeholder="Senha" required><br>
-    <button type="submit">Entrar</button>
-  </form>
-
+  <button id="toggleRegistro">Registrar nova conta</button>
+  <button id="toggleLogin" style="display:none">Já tem conta? Faça login</button>
+  <div id="registroBox">
+    <form id="formRegistro">
+      <input type="text" id="nome" placeholder="Nome" required><br>
+      <input type="email" id="email" placeholder="Email" required><br>
+      <input type="password" id="senha" placeholder="Senha" required><br>
+      <label for="tipo">Tipo de usuário:</label>
+      <select id="tipo" required>
+        <option value="">Selecione</option>
+        <option value="atendente">Atendente</option>
+        <option value="garcom">Garçom</option>
+        <option value="gerente">Gerente</option>
+      </select><br>
+      <button type="submit">Registrar</button>
+    </form>
+  </div>
+  <div id="loginBox" class="active">
+    <form id="formLogin">
+      <input type="email" id="loginEmail" placeholder="Email" required><br>
+      <input type="password" id="loginSenha" placeholder="Senha" required><br>
+      <button type="submit">Entrar</button>
+    </form>
+  </div>
   <p id="mensagem"></p>
-
   <script>
     // Remove funções de localStorage, agora usamos API
     async function salvarUsuarioAPI(usuario) {
@@ -81,6 +84,31 @@
         document.getElementById('mensagem').innerText = res.erro || 'Email ou senha inválidos!';
       }
     };
+
+    // Alternância entre login e registro
+    const registroBox = document.getElementById('registroBox');
+    const loginBox = document.getElementById('loginBox');
+    const toggleRegistro = document.getElementById('toggleRegistro');
+    const toggleLogin = document.getElementById('toggleLogin');
+    toggleRegistro.onclick = function() {
+      registroBox.classList.add('active');
+      loginBox.classList.remove('active');
+      toggleRegistro.style.display = 'none';
+      toggleLogin.style.display = 'inline-block';
+      document.getElementById('mensagem').innerText = '';
+    };
+    toggleLogin.onclick = function() {
+      registroBox.classList.remove('active');
+      loginBox.classList.add('active');
+      toggleRegistro.style.display = 'inline-block';
+      toggleLogin.style.display = 'none';
+      document.getElementById('mensagem').innerText = '';
+    };
+    // Inicia mostrando login
+    registroBox.classList.remove('active');
+    loginBox.classList.add('active');
+    toggleRegistro.style.display = 'inline-block';
+    toggleLogin.style.display = 'none';
   </script>
 </body>
 </html>
