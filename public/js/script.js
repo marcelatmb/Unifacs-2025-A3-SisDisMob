@@ -108,7 +108,7 @@ async function cadastrarReserva() {
     const res = await response.json();
 
     if (response.ok) {
-      alert("Reserva cadastrada com sucesso! ");
+      alert("Reserva cadastrada com sucesso! ID: " + res.id);
       dataInput.value = "";
       document.getElementById("hora").value = "";
       document.getElementById("numeroMesa").value = "";

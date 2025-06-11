@@ -30,7 +30,7 @@ exports.criarReserva = async (req, res) => {
         .json({ error: "Todos os campos obrigatórios devem ser preenchidos." });
     }
 
-    await service.inserirReserva(
+    resultado = await service.inserirReserva(
       req.db,
       data,
       hora,
@@ -41,7 +41,11 @@ exports.criarReserva = async (req, res) => {
       garcom
     );
 
-    res.status(201).json({ message: "Reserva criada com sucesso!" });
+    res.status(201).json({
+      message: resultado.message,
+      id: resultado.id
+    });
+
   } catch (error) {
     console.error("Erro ao criar reserva:", error.message);
     // Erros específicos do serviço (como data inválida ou conflito de horário)
