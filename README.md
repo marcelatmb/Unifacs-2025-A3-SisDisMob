@@ -26,23 +26,41 @@ Este projeto consiste no desenvolvimento do backend de uma API para gerenciament
 
 ---
 
-## 3. Endpoints da API
+## 3. Como iniciar o projeto
 
-### 3.1. Relatório de reservas por período
+Após realizar o clone do repositório, siga os passos abaixo:
 
-**Endpoint:** `GET /reservas/relatorio?dataInicio=YYYY-MM-DD&dataFim=YYYY-MM-DD`
+```bash
+# Clone o repositório
+git clone https://github.com/marcelatmb/Unifacs-2025-A3-SisDisMob
 
-**Descrição:** Retorna uma lista de reservas no intervalo de datas informado.
+# Acesse a pasta do projeto
+cd Unifacs-2025-A3-SisDisMob
 
-**Resposta:**
-Lista de objetos com informações de reserva (id, nome do responsável, data, hora, número da mesa, status, garçom).
+# Instale as dependências
+npm install
+
+# Inicie o servidor
+npm start
+```
+
+Após esses passos, o servidor estará disponível no endereço:
+**[http://localhost:3000](http://localhost:3000)**
 
 ---
 
-### 3.2. Relatório de reservas por número da mesa
+## 4. Endpoints da API
+
+### 4.1. Relatório de reservas por período
+
+**Endpoint:** `GET /reservas/relatorio?dataInicio=YYYY-MM-DD&dataFim=YYYY-MM-DD`
+**Descrição:** Retorna uma lista de reservas no intervalo de datas informado.
+
+---
+
+### 4.2. Relatório de reservas por número da mesa
 
 **Endpoint:** `GET /reservas/mesa/:numeroMesa`
-
 **Descrição:** Retorna as reservas relacionadas à mesa especificada.
 
 **Parâmetro:**
@@ -51,10 +69,9 @@ Lista de objetos com informações de reserva (id, nome do responsável, data, h
 
 ---
 
-### 3.3. Relatório de reservas por status
+### 4.3. Relatório de reservas por status
 
 **Endpoint:** `GET /reservas/status/:status`
-
 **Descrição:** Retorna mesas com reservas que possuem o status informado.
 
 **Parâmetro:**
@@ -63,30 +80,28 @@ Lista de objetos com informações de reserva (id, nome do responsável, data, h
 
 ---
 
-### 3.4. Relatório de reservas confirmadas por garçom
+### 4.4. Relatório de reservas confirmadas por garçom
 
 **Endpoint:** `GET /reservas/confirmadas/por-garcom`
-
 **Descrição:** Retorna as reservas confirmadas agrupadas por garçom.
 
 ---
 
-### 3.5. Relatório de reserva por ID
+### 4.5. Relatório de reserva por ID
 
 **Endpoint:** `GET /reservas/id/:idReserva`
-
 **Descrição:** Retorna os dados de uma reserva específica pelo seu ID.
 
 ---
 
-## 4. Tratamento de Erros
+## 5. Tratamento de Erros
 
 * Todos os endpoints retornam mensagens claras em caso de erro, incluindo erros de validação de parâmetros e erros internos do servidor.
 * Mensagens de erro são retornadas em formato JSON, com propriedades como `detalhe` ou `error`.
 
 ---
 
-## 5. Funcionamento Interno
+## 6. Funcionamento Interno
 
 * As funções assíncronas utilizam `fetch` para requisições HTTP.
 * Cada função valida os parâmetros recebidos e exibe mensagens de alerta caso estejam inválidos.
@@ -94,6 +109,6 @@ Lista de objetos com informações de reserva (id, nome do responsável, data, h
 
 ---
 
-## 6. Considerações Finais
+## 7. Considerações Finais
 
 Este backend é essencial para o funcionamento do sistema de reservas, facilitando consultas detalhadas e específicas que auxiliam na gestão do restaurante.
