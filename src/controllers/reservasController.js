@@ -42,6 +42,7 @@ exports.criarReserva = async (req, res) => {
     );
 
     res.status(201).json({
+      message: resultado.message,
       id: resultado.id
     });
 
